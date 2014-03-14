@@ -1,0 +1,95 @@
+Scala-tulkki toimii komentoriviltä komennolla scala. Tulkissa voi suorittaa koodia, esimerkiksi yhteenlasku onnistuu kätevästi:
+scala> 1+3
+res0: Int = 4
+
+Tulkki laittaa saamansa arvot vakiohin res0, res1, jne. Samalla rivillä kerrotaan arvon tyyppi ja laskutoimituksen tulos.
+
+var-ilmauksella saadaan määriteltyä muuttujia.
+scala> var tulos = 1 + 1
+tulos: Int = 2
+
+scala> println(tulos)
+2
+
+val-ilmaus vastaa final-ilmausta.
+
+Rakennetta voi jatkaa tulkissa uudella rivillä:
+scala> def hip(a: String, b: String) {
+     | println("hip " + a + " " + b)
+     | }
+hip: (a: String, b: String)Unit
+
+Funktioiden muodollisten parametrien tyypit tulee ilmaista, mutta funktion arvon tyyppiä ei tarvitse merkitä, jos kääntäjä osaa päätellä tyypin.
+
+Void-metodien tyyppi on Unit.
+
+args-taulukko sisältää komentoriviparametrit.
+
+args.foreach(println) tulostaa parametrit. Sama voidaan myös kirjoittaa muodossa args foreach println.
+
+Scalassa ei ole operaatioita ++i ja i++, mutta i += 1 löytyy korvaajaksi.
+
+Funktioiden käyttäminen parametreina on mahdollista.
+def laske(x: Int, y: Int, arvo: (Int, Int) => Int) =
+	println(arvo(x, y))
+
+def erotus(a: Int, b: Int) = a-b
+def summa(a: Int, b: Int) = a+b
+
+laske(1, 2, summa)
+3
+
+laske(1, 2, erotus)
+-1
+
+Taulukot toimivat seuraavasti
+val ints = new Array[Int](4)
+ints(0) = 1
+ints(1) = 2
+ints(2) = 3
+ints(3) = 4
+
+scala> ints.foreach(println)
+1
+2
+3
+4
+
+Taulukon alkioiden tyyppi annetaan hakasuluissa ja alkioiden lukumäärä kaarisuluissa.
+Taulukon indeksi annetaan kaarisuluissa.
+
+Listat ovat Scalassa muuttumattomia (vertaa Javan Stringit)
+
+Operaatio ::: katenoi oikeanpuoleisen listan vasemmanpuoleiseen:
+val ints = List(1, 2, 3, 4)
+val ints2 = List(5, 6)
+val res = ints ::: ints2
+
+scala> println(res)
+List(1, 2, 3, 4, 5, 6)
+
+Operaatio :: liittää alkion listan alkupäähän:
+scala> val res = 0 :: ints
+res: List[Int] = List(0, 1, 2, 3, 4)
+
+Vastaavasti operaatio :+ lisää alkion listan loppuun:
+scala> val res = ints :+ 5
+res: List[Int] = List(1, 2, 3, 4, 5)
+
+Apista löytyy kasa operaatioita, kuten esim map, filter, foreach.
+
+Scalassa monikot ovat kuin listoja, jonka alkiot voivat olla eri tyyppisiä.
+val test = (1, "yksi")
+
+scala> println(test)
+(1,yksi)
+
+Scalassa setit ja mapit voivat olla muuttumattomia tai muuttettavia.
+Oletusarvoisesti set on muuttumaton
+var setti = Set("eka", "toka")
+var mappi = Map[Int, String]()
+
+Oikealla importilla saadaan käyttöön muutettava setti:
+import scala.collection.mutable.Set
+
+Vastaava importti on mapin kohdalla import scala.collection.mutable.Map
