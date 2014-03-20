@@ -1,0 +1,105 @@
+Luokista:
+
+Pääkonstruktorin muodolliset parametri annetaan luokkamäärittelyn otsikossa:
+-var = julkinen muokattava kenttä
+-val = julkinen vakiokenttä
+-ei mitään määrettä = privaatti vakiokenttä //oliokohtaista
+-private var = privaatti muutettava kenttä
+
+-Kenttä ilman private-määrettä tarkoittaa julkista val-arvoa tai julkista var-muuttujaa.
+-Kenttä private-määreellä tarkoittaa salaista val-arvoa tai salaista var-muuttujaa. //luokkakohtainen
+
+-muut konstruktorit ohjelmoidaan pääkonstruktorin avulla (thisiä käyttäen)
+
+-Scalassa ei ole static-määrettä
+
+//mukailtu kurssimateriaalista
+class Esim(piiloVakio: Int, val julkinenVakio: Int, var julkinenMuuttuja: Int, private var piiloMuuttuja: Int) {
+
+	def this(arvo: Int) {
+		this(1, arvo, 2, 3)
+		println("jahuu") //konstruktorin lohkoon voi lisätä operaatioita, mutta this-kutsun pitää olla alussa
+	}
+	
+	//getteri
+	def annaArvo = piiloMuuttuja
+	
+	//setteri
+	def asetaArvo(uusi: Int) piiloMuuttuja = uusi
+	
+	//korvauksessa override on pakko kirjoittaa
+	override def toString = "jee " + piiloMuuttuja
+}
+
+val a = new Esim(1,2,3,4)
+val b = new Esim(1234)
+
+println(a) //jee 4
+println(a.annaArvo) //4
+a.asetaArvo(5)
+println(a) //jee 5
+
+println(b) //jee 3
+
+
+-factory-metodien käyttö on yleistä Scalassa: luokkamäärittelyn kanssa samaan käännösyksikköön ohjelmoidaan saman niminen singleton-olio. Tällainen olio on luokan oliokumppani (companion object) ja luokka tuon olion luokkakumppani (companion class).
+
+//kopioitu kurssimateriaalista
+class InttiOb(alkuarvo: Int) {  // luokkakumppani
+    var arvo = alkuarvo
+  }
+
+  object InttiOb {  // oliokumppani
+    def apply(alkuarvo: Int) = {  // factory-metodi!
+      println("Tehdas valmistaa InttiObin " + alkuarvo)
+      new InttiOb(alkuarvo)
+    }
+    def huu {println("BÖÖ")} // kirjastometodi
+  }
+
+  val a = InttiOb(7)  // factory-metodin kutsuja, siis ei new-operaatioita!
+  val b = InttiOb(14)
+
+  val c = InttiOb.apply(42) // näinkin toki saa sanoa...
+
+  val d = new InttiOb(49)   // ja toki näikin ...
+
+  println(a.arvo)
+  println(b arvo)
+  println(c arvo)
+  println(d arvo)
+  InttiOb.huu         // kirjastometodin kutsu
+  
+Tulostus:
+Tehdas valmistaa InttiObin 7
+Tehdas valmistaa InttiObin 14
+Tehdas valmistaa InttiObin 42
+7
+14
+42
+49
+BÖÖ
+
+
+Sarjanumeroiden generointi
+-Singleton-patterinin avulla voidaan kiertää staticcien puute:
+
+class Rational(os: Int, nim: Int) {
+  Rational.lkm += 1
+  println(Rational.lkm +". luku: "+ os +"/"+ nim)
+}
+object Rational {
+  private var lkm = 0
+}
+
+val x = new Rational(1, 2)       //1. luku: 1/2
+val y = new Rational(764, 321);  //2. luku: 764/321
+
+// Rational.lkm = -666  **** error: variable lkm cannot be accessed in object this
+
+
+Tyyliseikoista
+-camelCasen käyttö tunnuksissa
+-luokkanimet isolla, funktiot ja muuttujat pienellä
+
+
